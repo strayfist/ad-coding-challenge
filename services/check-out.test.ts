@@ -7,18 +7,32 @@ describe("Checkout", () => {
       expect(checkout.total()).toEqual(0);
     });
 
-    const expectedPricings = [
-      { productType: ProductType.Classic, expectedPrice: 269.99 },
-      { productType: ProductType.Standout, expectedPrice: 322.99 },
-      { productType: ProductType.Premium, expectedPrice: 394.99 },
-    ];
+    const expectedPricingPerProduct = {
+      [ProductType.Classic]: 269.99,
+      [ProductType.Standout]: 322.99,
+      [ProductType.Premium]: 394.99,
+    };
     describe("single product in cart has correct pricing", () => {
-      expectedPricings.forEach(({ productType, expectedPrice }) => {
+      Object.keys(expectedPricingPerProduct).forEach((key: string) => {
+        const productType = key as ProductType;
+        const expectedPrice = expectedPricingPerProduct[productType];
         test(`${productType} has correct price $${expectedPrice}`, () => {
           const checkout = new Checkout();
           checkout.add({ productType });
           expect(checkout.total()).toEqual(expectedPrice);
         });
+      });
+    });
+
+    describe("multiple products", () => {
+      test("multiple identical products in cart have correct pricing", () => {
+        const checkout = new Checkout();
+        checkout.add({ productType: ProductType.Classic });
+        checkout.add({ productType: ProductType.Classic });
+
+        expect(checkout.total()).toEqual(
+          expectedPricingPerProduct[ProductType.Classic] * 2
+        );
       });
     });
   });

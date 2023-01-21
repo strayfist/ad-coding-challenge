@@ -9,9 +9,9 @@ export enum ProductType {
 }
 
 const productPricing: Record<ProductType, number> = {
-  Classic: 269.99,
-  Standout: 322.99,
-  Premium: 394.99,
+  [ProductType.Classic]: 269.99,
+  [ProductType.Standout]: 322.99,
+  [ProductType.Premium]: 394.99,
 };
 
 export class Checkout {
@@ -29,7 +29,7 @@ export class Checkout {
     }
 
     const firstProduct = this.cart[0];
-    const price = productPricing[firstProduct.productType];
+    const price = productPricing[firstProduct.productType] * this.cart.length;
     return price;
   };
 }
