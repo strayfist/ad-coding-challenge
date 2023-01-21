@@ -3,15 +3,15 @@ export type Product = {
   productType: ProductType;
 };
 export enum ProductType {
-  ClassicAd = "ClassicAd",
-  StandoutAd = "StandoutAd",
-  PremiumAd = "PremiumAd",
+  Classic = "Classic",
+  Standout = "Standout",
+  Premium = "Premium",
 }
 
 const productPricing: Record<ProductType, number> = {
-  ClassicAd: 269.99,
-  StandoutAd: 322.99,
-  PremiumAd: 394.99,
+  Classic: 269.99,
+  Standout: 322.99,
+  Premium: 394.99,
 };
 
 export class Checkout {

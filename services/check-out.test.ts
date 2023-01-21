@@ -8,9 +8,9 @@ describe("Checkout", () => {
     });
 
     const expectedPricings = [
-      { productType: ProductType.ClassicAd, expectedPrice: 269.99 },
-      { productType: ProductType.StandoutAd, expectedPrice: 322.99 },
-      { productType: ProductType.PremiumAd, expectedPrice: 394.99 },
+      { productType: ProductType.Classic, expectedPrice: 269.99 },
+      { productType: ProductType.Standout, expectedPrice: 322.99 },
+      { productType: ProductType.Premium, expectedPrice: 394.99 },
     ];
     describe("single product in cart has correct pricing", () => {
       expectedPricings.forEach(({ productType, expectedPrice }) => {
