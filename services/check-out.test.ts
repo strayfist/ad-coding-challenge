@@ -47,6 +47,19 @@ describe("Checkout", () => {
             expectedPricingPerProduct[ProductType.Premium]
         );
       });
+
+      test("all different products with multiple quantities have correct pricing", () => {
+        const checkout = new Checkout();
+        checkout.add({ productType: ProductType.Classic });
+        checkout.add({ productType: ProductType.Classic });
+        checkout.add({ productType: ProductType.Classic });
+        checkout.add({ productType: ProductType.Premium });
+
+        expect(checkout.total()).toEqual(
+          expectedPricingPerProduct[ProductType.Classic] * 3 +
+            expectedPricingPerProduct[ProductType.Premium]
+        );
+      });
     });
   });
 });
