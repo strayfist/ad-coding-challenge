@@ -2,7 +2,7 @@ import { Checkout, ProductType } from "./check-out";
 
 describe("Checkout", () => {
   describe("total", () => {
-    test("no items in cart should be $0", () => {
+    test("no items should be $0", () => {
       const checkout = new Checkout();
       expect(checkout.total()).toEqual(0);
     });
@@ -12,7 +12,7 @@ describe("Checkout", () => {
       [ProductType.Standout]: 322.99,
       [ProductType.Premium]: 394.99,
     };
-    describe("single product in cart has correct pricing", () => {
+    describe("single product has correct pricing", () => {
       Object.keys(expectedPricingPerProduct).forEach((key: string) => {
         const productType = key as ProductType;
         const expectedPrice = expectedPricingPerProduct[productType];
@@ -25,7 +25,7 @@ describe("Checkout", () => {
     });
 
     describe("multiple products", () => {
-      test("multiple identical products in cart have correct pricing", () => {
+      test("multiple identical products have correct pricing", () => {
         const checkout = new Checkout();
         checkout.add({ productType: ProductType.Classic });
         checkout.add({ productType: ProductType.Classic });
@@ -35,7 +35,7 @@ describe("Checkout", () => {
         );
       });
 
-      test("all different products in cart have correct pricing", () => {
+      test("all different products have correct pricing", () => {
         const checkout = new Checkout();
         checkout.add({ productType: ProductType.Classic });
         checkout.add({ productType: ProductType.Standout });
