@@ -26,10 +26,11 @@ export class Checkout {
   public total = () => {
     if (this.cart.length === 0) {
       return 0;
-    }
-
-    const firstProduct = this.cart[0];
-    const price = productPricing[firstProduct.productType] * this.cart.length;
-    return price;
+		}
+		
+		return this.cart.reduce((currentTotal: number, currentItem: Product) => {
+			const currentItemPrice = productPricing[currentItem.productType];
+			return currentTotal + currentItemPrice;
+		}, 0);
   };
 }
