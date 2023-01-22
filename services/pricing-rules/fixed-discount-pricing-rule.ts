@@ -3,7 +3,7 @@ import { DiscountedProductTypePricingRuleConfig } from "../../types/pricing-rule
 import { Product } from "../../types/products";
 import { BasePricingRule } from "./base-pricing-rule";
 
-export class DiscountedProductTypePricingRule extends BasePricingRule {
+export class FixedDiscountPricingRule extends BasePricingRule {
   constructor(private options: DiscountedProductTypePricingRuleConfig) {
     super();
   }

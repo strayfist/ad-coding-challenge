@@ -1,7 +1,7 @@
 import { ProductType } from "../types/products";
 import { Checkout } from "./check-out";
 import { BuyXForYPricingRule } from "./pricing-rules/buy-x-for-y-pricing-rule";
-import { DiscountedProductTypePricingRule } from "./pricing-rules/discounted-product-type-pricing-rule";
+import { FixedDiscountPricingRule } from "./pricing-rules/fixed-discount-pricing-rule";
 
 describe("Checkout", () => {
   describe("total", () => {
@@ -141,7 +141,7 @@ describe("Checkout", () => {
         const discountedPricePerAd = 299.99;
 
         const pricingRules = [
-          new DiscountedProductTypePricingRule({
+          new FixedDiscountPricingRule({
             applyToCustomers: ["AxilCoffeeRoasters"],
             productType: ProductType.Standout,
             discountedPricePerAd,
