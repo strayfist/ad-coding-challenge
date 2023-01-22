@@ -67,7 +67,6 @@ describe("Checkout", () => {
 
     describe("Special pricing rules for privileged customers", () => {
       describe("Buy X for Y deal", () => {
-
         const pricingRules = [
           new BuyXForYPricingRule({
             applyToCustomers: ["SecondBite"],
@@ -76,7 +75,7 @@ describe("Checkout", () => {
             productType: ProductType.Classic,
           }),
         ];
-      
+
         test("Special customer gets a 3 for 2 deal on Classic Ads", () => {
           const checkout = new Checkout(pricingRules);
           checkout.add({ productType: ProductType.Classic });
@@ -182,6 +181,47 @@ describe("Checkout", () => {
 
           expect(checkout.total({ customer: "AxilCoffeeRoasters" })).toEqual(
             expectedPricingPerProduct[ProductType.Premium]
+          );
+        });
+      });
+
+      describe("Combined pricing rules (Buy X for Y deal together with Fixed discount per product type)", () => {
+        const discountedPricePerAd = 389.99;
+
+        const pricingRules = [
+          new BuyXForYPricingRule({
+            applyToCustomers: ["MYER"],
+            receiveQuantity: 5,
+            payForQuantity: 4,
+            productType: ProductType.Standout,
+          }),
+          new FixedDiscountPricingRule({
+            applyToCustomers: ["MYER"],
+            productType: ProductType.Premium,
+            discountedPricePerAd,
+          }),
+        ];
+
+        test("Buy X for Y deal returns correct cart price", () => {
+          const checkout = new Checkout(pricingRules);
+          checkout.add({ productType: ProductType.Standout });
+          checkout.add({ productType: ProductType.Standout });
+          checkout.add({ productType: ProductType.Standout });
+          checkout.add({ productType: ProductType.Standout });
+          checkout.add({ productType: ProductType.Standout });
+
+          expect(checkout.total({ customer: "MYER" })).toEqual(
+            expectedPricingPerProduct[ProductType.Standout] * 4
+          );
+        });
+
+        test("Fixed discount returns correct cart price", () => {
+          const checkout = new Checkout(pricingRules);
+          checkout.add({ productType: ProductType.Premium });
+          checkout.add({ productType: ProductType.Premium });
+
+          expect(checkout.total({ customer: "MYER" })).toEqual(
+            discountedPricePerAd * 2
           );
         });
       });
