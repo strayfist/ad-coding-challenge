@@ -1,6 +1,7 @@
 import { ProductType } from "../types/products";
 import { Checkout } from "./check-out";
 import { BuyXForYPricingRule } from "./pricing-rules/buy-x-for-y-pricing-rule";
+import { DiscountedProductTypePricingRule } from "./pricing-rules/discounted-product-type-pricing-rule";
 
 describe("Checkout", () => {
   describe("total", () => {
@@ -160,8 +161,57 @@ describe("Checkout", () => {
           checkout.add({ productType: ProductType.Standout });
           checkout.add({ productType: ProductType.Standout });
 
-          expect(checkout.total({ customer: "RecruiterX" })).toEqual(
+          expect(checkout.total({ customer: "RecruiterUnknown" })).toEqual(
             expectedPricingPerProduct[ProductType.Standout] * 3
+          );
+        });
+      });
+
+      describe("Axil Coffee Roasters", () => {
+        const discountedPricePerAd = 299.99;
+
+        const pricingRules = [
+          new DiscountedProductTypePricingRule({
+            applyToCustomers: ["AxilCoffeeRoasters"],
+            productType: ProductType.Standout,
+            discountedPricePerAd,
+          }),
+        ];
+
+        test("Axil Coffee Roasters gets a discount on Stand out Ads where the price drops to $299.99 per ad", () => {
+          const checkout = new Checkout(pricingRules);
+          checkout.add({ productType: ProductType.Standout });
+
+          expect(checkout.total({ customer: "AxilCoffeeRoasters" })).toEqual(
+            discountedPricePerAd
+          );
+        });
+
+        test("Special pricing can be applied for multiple quantities same product type", () => {
+          const checkout = new Checkout(pricingRules);
+          checkout.add({ productType: ProductType.Standout });
+          checkout.add({ productType: ProductType.Standout });
+
+          expect(checkout.total({ customer: "AxilCoffeeRoasters" })).toEqual(
+            discountedPricePerAd * 2
+          );
+        });
+
+        test("Special pricing doesn't get applied to other customers", () => {
+          const checkout = new Checkout(pricingRules);
+          checkout.add({ productType: ProductType.Standout });
+
+          expect(checkout.total({ customer: "RecruiterUnknown" })).toEqual(
+            expectedPricingPerProduct[ProductType.Standout]
+          );
+        });
+
+        test("Special pricing doesn't get applied to other product types", () => {
+          const checkout = new Checkout(pricingRules);
+          checkout.add({ productType: ProductType.Premium });
+
+          expect(checkout.total({ customer: "AxilCoffeeRoasters" })).toEqual(
+            expectedPricingPerProduct[ProductType.Premium]
           );
         });
       });
