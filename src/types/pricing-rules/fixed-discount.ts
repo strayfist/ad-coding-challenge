@@ -1,11 +1,11 @@
 import { ProductType } from "../products";
-import { CustomerSpecificRuleConfig } from "./pricing-rule";
+import { CustomerSpecificRuleConfig } from "./pricing-rule-config";
 
 /**
  * Configuration of the DiscountedProductType pricing rule
  * eg. "Customer gets a discount on Stand out Ads where the price drops to $299.99 per ad"
  */
-export type DiscountedProductTypePricingRuleConfig =
+export type FixedDiscountPricingRuleConfig =
   CustomerSpecificRuleConfig & {
     /**
      * What product will this pricing rule apply to?

@@ -1,10 +1,14 @@
 import { standardProductPricing } from "../../config/pricing-config";
-import { DiscountedProductTypePricingRuleConfig } from "../../types/pricing-rules/discounted-product-type";
+import { FixedDiscountPricingRuleConfig } from "../../types/pricing-rules/fixed-discount";
 import { Product } from "../../types/products";
 import { BasePricingRule } from "./base-pricing-rule";
 
+/**
+ * DiscountedProductType pricing rule - allows a fixed price discount per ad for a specific customer & product type
+ * eg. "Customer gets a discount on Stand out Ads where the price drops to $299.99 per ad"
+ */
 export class FixedDiscountPricingRule extends BasePricingRule {
-  constructor(private options: DiscountedProductTypePricingRuleConfig) {
+  constructor(private options: FixedDiscountPricingRuleConfig) {
     super();
   }
 

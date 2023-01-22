@@ -1,8 +1,9 @@
 import { ProductType } from "../products";
-import { CustomerSpecificRuleConfig } from "./pricing-rule";
+import { CustomerSpecificRuleConfig } from "./pricing-rule-config";
 
 /**
- * Configuration of the BuyXForY pricing rule - "Customer gets a 3 for 2 deal on Classic Ads"
+ * Configuration of the BuyXForY pricing rule
+ * e.g. "Customer gets a 3 for 2 deal on Classic Ads"
  */
 export type BuyXForYPricingRuleConfig = CustomerSpecificRuleConfig & {
   /**

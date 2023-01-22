@@ -3,7 +3,11 @@ import { BuyXForYPricingRuleConfig } from "../../types/pricing-rules/buy-x-for-y
 import { Product } from "../../types/products";
 import { BasePricingRule } from "./base-pricing-rule";
 
-export class BuyXForYPricingRule extends BasePricingRule {
+/**
+ * BuyXForY pricing rule - "Customer gets a 3 for 2 deal on Classic Ads".
+ * Applies to a specific customer and a specific product type.
+ */
+ export class BuyXForYPricingRule extends BasePricingRule {
   constructor(private options: BuyXForYPricingRuleConfig) {
     super();
   }

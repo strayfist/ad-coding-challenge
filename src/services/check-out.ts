@@ -10,6 +10,9 @@ type CheckoutTotalOptions = {
   customer?: string;
 };
 
+/**
+ * Manages the shopping cart items and the calculation of the total price
+ */
 export class Checkout {
   private cart: Product[] = [];
 
