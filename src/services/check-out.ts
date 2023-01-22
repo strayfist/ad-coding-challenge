@@ -23,10 +23,6 @@ export class Checkout {
   };
 
   public total = ({ customer }: CheckoutTotalOptions = {}) => {
-    if (this.cart.length === 0) {
-      return 0;
-    }
-
 		// calculate the standard price without any discounting
     const cartPriceStandard = this.cart.reduce(
       (currentTotal: number, currentItem: Product) => {
