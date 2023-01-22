@@ -66,16 +66,18 @@ describe("Checkout", () => {
     });
 
     describe("Special pricing rules for privileged customers", () => {
-      describe("SecondBite", () => {
-        test("SecondBite gets a 3 for 2 deal on Classic Ads", () => {
-          const pricingRules = [
-            new BuyXForYPricingRule({
-              applyToCustomers: ["SecondBite"],
-              receiveQuantity: 3,
-              payForQuantity: 2,
-              productType: ProductType.Classic,
-            }),
-          ];
+      describe("Buy X for Y deal", () => {
+
+        const pricingRules = [
+          new BuyXForYPricingRule({
+            applyToCustomers: ["SecondBite"],
+            receiveQuantity: 3,
+            payForQuantity: 2,
+            productType: ProductType.Classic,
+          }),
+        ];
+      
+        test("Special customer gets a 3 for 2 deal on Classic Ads", () => {
           const checkout = new Checkout(pricingRules);
           checkout.add({ productType: ProductType.Classic });
           checkout.add({ productType: ProductType.Classic });
@@ -87,14 +89,6 @@ describe("Checkout", () => {
         });
 
         test("Special pricing can be applied for multiple groups of X quantity", () => {
-          const pricingRules = [
-            new BuyXForYPricingRule({
-              applyToCustomers: ["SecondBite"],
-              receiveQuantity: 3,
-              payForQuantity: 2,
-              productType: ProductType.Classic,
-            }),
-          ];
           const checkout = new Checkout(pricingRules);
           checkout.add({ productType: ProductType.Classic });
           checkout.add({ productType: ProductType.Classic });
@@ -109,14 +103,6 @@ describe("Checkout", () => {
         });
 
         test("Special pricing doesn't get applied if they didn't order enough of that product type", () => {
-          const pricingRules = [
-            new BuyXForYPricingRule({
-              applyToCustomers: ["SecondBite"],
-              receiveQuantity: 3,
-              payForQuantity: 2,
-              productType: ProductType.Classic,
-            }),
-          ];
           const checkout = new Checkout(pricingRules);
           checkout.add({ productType: ProductType.Classic });
           checkout.add({ productType: ProductType.Classic });
@@ -127,14 +113,6 @@ describe("Checkout", () => {
         });
 
         test("Special pricing doesn't get applied to other customers", () => {
-          const pricingRules = [
-            new BuyXForYPricingRule({
-              applyToCustomers: ["SecondBite"],
-              receiveQuantity: 3,
-              payForQuantity: 2,
-              productType: ProductType.Classic,
-            }),
-          ];
           const checkout = new Checkout(pricingRules);
           checkout.add({ productType: ProductType.Classic });
           checkout.add({ productType: ProductType.Classic });
@@ -146,14 +124,6 @@ describe("Checkout", () => {
         });
 
         test("Special pricing doesn't get applied to other product types", () => {
-          const pricingRules = [
-            new BuyXForYPricingRule({
-              applyToCustomers: ["SecondBite"],
-              receiveQuantity: 3,
-              payForQuantity: 2,
-              productType: ProductType.Classic,
-            }),
-          ];
           const checkout = new Checkout(pricingRules);
 
           // the productType in the rule doesn't match what's in the cart
@@ -167,7 +137,7 @@ describe("Checkout", () => {
         });
       });
 
-      describe("Axil Coffee Roasters", () => {
+      describe("Fixed discount per product type", () => {
         const discountedPricePerAd = 299.99;
 
         const pricingRules = [
@@ -178,7 +148,7 @@ describe("Checkout", () => {
           }),
         ];
 
-        test("Axil Coffee Roasters gets a discount on Stand out Ads where the price drops to $299.99 per ad", () => {
+        test("Special customer gets a fixed discount on Stand out Ads where the price drops to $299.99 per ad", () => {
           const checkout = new Checkout(pricingRules);
           checkout.add({ productType: ProductType.Standout });
 
