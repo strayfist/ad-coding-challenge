@@ -1,3 +1,4 @@
+import { defaultPricingRules } from "../config/pricing-config";
 import { ProductType } from "../types/products";
 import { Checkout } from "./check-out";
 import { BuyXForYPricingRule } from "./pricing-rules/buy-x-for-y-pricing-rule";
@@ -224,6 +225,39 @@ describe("Checkout", () => {
             discountedPricePerAd * 2
           );
         });
+      });
+    });
+
+    describe("Default pricing rules work for specific customers", () => {
+      test("Default customer with all different products", () => {
+        const checkout = new Checkout(defaultPricingRules);
+        checkout.add({ productType: ProductType.Classic });
+        checkout.add({ productType: ProductType.Standout });
+        checkout.add({ productType: ProductType.Premium });
+
+        expect(checkout.total({ customer: "default" })).toEqual(987.97);
+      });
+
+      test("Customer SecondBite with discounted Classic and premium", () => {
+        const checkout = new Checkout(defaultPricingRules);
+        checkout.add({ productType: ProductType.Classic });
+        checkout.add({ productType: ProductType.Classic });
+        checkout.add({ productType: ProductType.Classic });
+        checkout.add({ productType: ProductType.Premium });
+
+        expect(checkout.total({ customer: "SecondBite" })).toEqual(934.97);
+      });
+
+      test("Customer AxilCoffeeRoasters with discounted stand out ads and premium", () => {
+        const checkout = new Checkout(defaultPricingRules);
+        checkout.add({ productType: ProductType.Standout });
+        checkout.add({ productType: ProductType.Standout });
+        checkout.add({ productType: ProductType.Standout });
+        checkout.add({ productType: ProductType.Premium });
+
+        expect(checkout.total({ customer: "AxilCoffeeRoasters" })).toEqual(
+          1294.96
+        );
       });
     });
   });
