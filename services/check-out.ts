@@ -1,36 +1,48 @@
-export type PricingRule = {};
-export type Product = {
-  productType: ProductType;
-};
-export enum ProductType {
-  Classic = "Classic",
-  Standout = "Standout",
-  Premium = "Premium",
-}
+import { standardProductPricing } from "../config/pricing-config";
+import { Product } from "../types/products";
+import { BasePricingRule } from "./pricing-rules/base-pricing-rule";
 
-const productPricing: Record<ProductType, number> = {
-  [ProductType.Classic]: 269.99,
-  [ProductType.Standout]: 322.99,
-  [ProductType.Premium]: 394.99,
+/**
+ * Optional configuration when calculating total that is used in conjuction with
+ * pricing rules to enable special pricing.
+ */
+type CheckoutTotalOptions = {
+  customer?: string;
 };
 
 export class Checkout {
   private cart: Product[] = [];
 
-  constructor(private pricingRules: PricingRule[] = []) {}
+  constructor(private pricingRules: BasePricingRule[] = []) {}
 
   public add = (product: Product) => {
     this.cart.push(product);
   };
 
-  public total = () => {
+  public total = ({ customer }: CheckoutTotalOptions = {}) => {
     if (this.cart.length === 0) {
       return 0;
-		}
-		
-		return this.cart.reduce((currentTotal: number, currentItem: Product) => {
-			const currentItemPrice = productPricing[currentItem.productType];
-			return currentTotal + currentItemPrice;
-		}, 0);
+    }
+
+		// calculate the standard price without any discounting
+    const cartPriceStandard = this.cart.reduce(
+      (currentTotal: number, currentItem: Product) => {
+        const currentItemPrice = standardProductPricing[currentItem.productType];
+        return currentTotal + currentItemPrice;
+      },
+      0
+    );
+
+		// apply each pricing rule to the current price
+    let currentCartPrice = cartPriceStandard;
+    for (const pricingRule of this.pricingRules) {
+      currentCartPrice = pricingRule.applyRuleToCart(
+        this.cart,
+        currentCartPrice,
+        customer
+      );
+    }
+
+    return currentCartPrice;
   };
 }
